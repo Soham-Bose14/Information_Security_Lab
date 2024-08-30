@@ -18,6 +18,27 @@ def decrypt_vigenere_cipher(encrypted_msg, key):
         decrypted_msg += chr(pos+97)
     return decrypted_msg
 
+def autokey_cipher(plaintext, initial_key):
+    cur_key = initial_key
+    cipherText=""
+    for i in range(len(plaintext)):
+        if not plaintext[i].isalpha():
+            continue
+        pos = (ord(plaintext[i])-97+cur_key) % 26
+        cur_key = pos
+        cipherText += chr(pos+97)
+    return cipherText
+
+def decrypt_autokey_cipher(cipherText, initial_key):
+    cur_key = initial_key
+    plainText=""
+    for i in range(len(cipherText)):
+        if not cipherText[i].isalpha():
+            continue
+        pos = (ord(cipherText[i])-97-cur_key) % 26
+        cur_key = ord()
+        plainText += chr(pos+97)
+    return plainText
 
 key = "dollars"
 message = "the house is being sold tonight"
