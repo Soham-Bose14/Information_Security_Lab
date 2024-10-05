@@ -25,7 +25,7 @@ def autokey_cipher(plaintext, initial_key):
         if not plaintext[i].isalpha():
             continue
         pos = (ord(plaintext[i])-97+cur_key) % 26
-        cur_key = pos
+        cur_key = ord(plaintext[i])-97
         cipherText += chr(pos+97)
     return cipherText
 
@@ -36,7 +36,7 @@ def decrypt_autokey_cipher(cipherText, initial_key):
         if not cipherText[i].isalpha():
             continue
         pos = (ord(cipherText[i])-97-cur_key) % 26
-        cur_key = ord()
+        cur_key = pos
         plainText += chr(pos+97)
     return plainText
 
@@ -47,3 +47,7 @@ cipherText = vigenere_cipher(message, key)
 print(f'Encrypted message using vigenere cipher: {cipherText}')
 plainText = decrypt_vigenere_cipher(cipherText, key)
 print(f'Decrypted message using vigenere cipher: {plainText}')
+cipherText = autokey_cipher(message, 7)
+print(f'Encrypted message using autokey cipher: {cipherText}')
+plainText = decrypt_autokey_cipher(cipherText, 7)
+print(f'Decrypted message using autokey cipher: {plainText}')

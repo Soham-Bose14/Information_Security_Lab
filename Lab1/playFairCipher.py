@@ -21,7 +21,7 @@ def findCharPosition(matrix, char):
     for i, row in enumerate(matrix):
         if char in row:
             return i, row.index(char)
-    return None
+    return -1, -1
 def playFairCipher(plaintext, key):
     plaintext = plaintext.upper()
     plaintext = plaintext.replace('J', 'I')
@@ -47,12 +47,33 @@ def playFairCipher(plaintext, key):
 
     return ciphertext
 
+def playFairDecipher(ciphertext, key):
+    ciphertext = ciphertext.upper()
+    matrix = createPlayfairMatrix(key)
+    
+    plaintext = ""
+    for i in range(0, len(ciphertext), 2):
+        first = findCharPosition(matrix, ciphertext[i])
+        second = findCharPosition(matrix, ciphertext[i + 1])
+
+        if first[0] == second[0]:  # Same row, shift left
+            plaintext += str(matrix[first[0]][(first[1] - 1) % 5]) + str(matrix[second[0]][(second[1] - 1) % 5])
+        elif first[1] == second[1]:  # Same column, shift up
+            plaintext += str(matrix[(first[0] - 1) % 5][first[1]]) + str(matrix[(second[0] - 1) % 5][second[1]])
+        else:  # Rectangle swap
+            plaintext += str(matrix[first[0]][second[1]]) + str(matrix[second[0]][first[1]])
+
+    return plaintext
+
 def main():
     key = "GUIDANCE"
     message = "The key is hidden under the door pad"
     print(f'Actual Message: {message}')
     encrypted_msg = playFairCipher(message, key)
     print(f'Encrypted Message: {encrypted_msg}')
+    decrypted_msg = playFairDecipher(encrypted_msg, key)
+    print(f'Decrypted Message: {decrypted_msg}')
+
 if __name__ == "__main__":
     main()
 
